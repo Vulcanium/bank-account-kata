@@ -1,18 +1,28 @@
-package org.christopher.bankaccountkata;
+package com.christopher.bankaccountkata.domain;
 
+import com.christopher.bankaccountkata.customexceptions.InsufficientAccountBalanceException;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
-import org.christopher.bankaccountkata.Operation.OperationType;
-import org.christopher.bankaccountkata.customexceptions.InsufficientAccountBalanceException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 public class AccountStatement {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @PositiveOrZero
     private double accountBalance;
-    private final List<Operation> operationHistory;
+
+    @OneToMany(mappedBy = "accountStatement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<@Valid Operation> operationHistory;
 
     public AccountStatement() {
         this.accountBalance = 0;
@@ -26,7 +36,7 @@ public class AccountStatement {
         }
 
         this.accountBalance += amount;
-        addOperationHistory(new Operation(LocalDate.now(), amount, accountBalance, OperationType.DEPOSIT));
+        addOperationHistory(new Operation(this, LocalDate.now(), amount, accountBalance));
     }
 
     public void withdraw(double amount) {
@@ -40,7 +50,7 @@ public class AccountStatement {
         }
 
         this.accountBalance -= amount;
-        addOperationHistory(new Operation(LocalDate.now(), amount, accountBalance, OperationType.WITHDRAWAL));
+        addOperationHistory(new Operation(this, LocalDate.now(), -amount, accountBalance));
     }
 
     private void addOperationHistory(Operation operation) {

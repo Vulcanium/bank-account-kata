@@ -1,4 +1,4 @@
-package org.christopher.bankaccountkata.customexceptions;
+package com.christopher.bankaccountkata.customexceptions;
 
 public class InsufficientAccountBalanceException extends RuntimeException {
 
