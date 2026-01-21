@@ -16,7 +16,7 @@ public class AccountStatementRepositoryTest {
     private AccountStatementRepository repository;
 
     @Test
-    void saveAndLoadBankAccount() {
+    void saveAndLoadAccountStatement() {
         AccountStatement account = new AccountStatement();
         repository.save(account);
 

@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OperationRepositoryTest {
 
     private OperationRepository operationRepository;
-    private AccountStatementRepository AccountStatementRepository;
+    private AccountStatementRepository accountStatementRepository;
 
     @Test
     void shouldSaveAndRetrieveOperation() {
 
         // Create an account
         AccountStatement account = new AccountStatement();
-        AccountStatementRepository.save(account);
+        accountStatementRepository.save(account);
 
         // Create an operation
         Operation operation = new Operation(
@@ -52,7 +52,7 @@ public class OperationRepositoryTest {
     @Test
     void shouldSaveMultipleOperationsForSameAccount() {
         AccountStatement account = new AccountStatement();
-        AccountStatementRepository.save(account);
+        accountStatementRepository.save(account);
 
         Operation op1 = new Operation(account, LocalDate.now(), 100.0, 100.0);
         Operation op2 = new Operation(account, LocalDate.now(), -50.0, 50.0);
